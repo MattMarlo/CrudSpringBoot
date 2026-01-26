@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>Inicio - Sistema Bancario</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="text-center py-5">
+            <div class="mb-4">
+                <i class="fas fa-university fa-5x text-primary mb-3"></i>
+                <h1 class="display-4 fw-bold">Sistema Bancario</h1>
+                <p class="lead text-muted">Gestión integral de clientes bancarios</p>
+            </div>
+            
+            <div class="row mt-5">
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                            <h4>Gestión de Clientes</h4>
+                            <p class="text-muted">Administre la información de sus clientes</p>
+                            <a th:href="@{/clientes}" class="btn btn-primary">
+                                <i class="fas fa-list me-2"></i> Ver Clientes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-user-plus fa-3x text-success mb-3"></i>
+                            <h4>Agregar Clientes</h4>
+                            <p class="text-muted">Registre nuevos clientes en el sistema</p>
+                            <a th:href="@{/clientes/nuevo}" class="btn btn-success">
+                                <i class="fas fa-plus me-2"></i> Nuevo Cliente
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
