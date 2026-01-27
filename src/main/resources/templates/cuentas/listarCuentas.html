@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/base}">
+<head><title>Listado de Cuentas</title></head>
+<body>
+    <div layout:fragment="content">
+        <div class="d-flex justify-content-between mb-3">
+            <h2>Gestión de Cuentas</h2>
+            <a th:href="@{/cuentas/crear}" class="btn btn-primary">Nueva Cuenta</a>
+        </div>
+        <table class="table table-hover shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nro Cuenta</th>
+                    <th>Tipo</th>
+                    <th>Cliente</th>
+                    <th>Saldo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="c : ${cuentas}">
+                    <td th:text="${c.numeroCuenta}"></td>
+                    <td th:text="${c.tipoCuenta}"></td>
+                    <td th:text="${c.cliente.nombre}"></td>
+                    <td th:text="${c.saldo}"></td>
+                    <td>
+                        <a th:href="@{/cuentas/editar/} + ${c.id}" class="btn btn-warning btn-sm">Editar</a>
+                        <a th:href="@{/cuentas/eliminar/} + ${c.id}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar?')">Eliminar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

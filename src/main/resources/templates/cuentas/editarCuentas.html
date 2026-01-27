@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head><title>Editar Cuenta</title></head>
+<body>
+    <div layout:fragment="content">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-warning text-dark">
+                        <h4 class="mb-0">Editar Detalles de la Cuenta</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="formCuenta" th:action="@{/cuentas/guardar}" th:object="${cuenta}" method="post">
+                            <input type="hidden" th:field="*{id}" />
+
+                            <div class="mb-3">
+                                <label class="form-label">Cliente Titular:</label>
+                                <select th:field="*{cliente}" class="form-select" th:classappend="${#fields.hasErrors('cliente')} ? 'is-invalid' : ''">
+                                    <option th:each="cli : ${clientes}" th:value="${cli.id}" th:text="${cli.nombre}"></option>
+                                </select>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('cliente')}" th:errors="*{cliente}"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Número de Cuenta:</label>
+                                <input type="text" th:field="*{numeroCuenta}" class="form-control" 
+                                       th:classappend="${#fields.hasErrors('numeroCuenta')} ? 'is-invalid' : ''"/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('numeroCuenta')}" th:errors="*{numeroCuenta}"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Tipo de Cuenta:</label>
+                                <select th:field="*{tipoCuenta}" class="form-select">
+                                    <option value="Ahorros">Ahorros</option>
+                                    <option value="Corriente">Corriente</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Saldo:</label>
+                                <input type="number" step="0.01" th:field="*{saldo}" class="form-control"
+                                       th:classappend="${#fields.hasErrors('saldo')} ? 'is-invalid' : ''"/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('saldo')}" th:errors="*{saldo}"></div>
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a th:href="@{/cuentas}" class="btn btn-secondary me-md-2">Cancelar</a>
+                                <button type="submit" class="btn btn-primary">Actualizar Registro</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="scripts">
+        <script>
+            $(document).ready(function() {
+                $("#formCuenta").validate({
+                    rules: {
+                        cliente: { required: true },
+                        numeroCuenta: { required: true, minlength: 5 },
+                        saldo: { required: true, number: true, min: 0 }
+                    },
+                    messages: {
+                        cliente: "Por favor, seleccione un titular",
+                        numeroCuenta: { required: "El número es necesario", minlength: "Mínimo 5 caracteres" },
+                        saldo: { required: "Ingrese el saldo", min: "No puede ser saldo negativo" }
+                    }
+                });
+            });
+        </script>
+    </th:block>
+</body>
+</html>

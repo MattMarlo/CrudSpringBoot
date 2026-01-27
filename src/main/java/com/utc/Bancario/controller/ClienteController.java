@@ -35,7 +35,7 @@ public class ClienteController {
     public String guardar(@Valid @ModelAttribute Cliente cliente, BindingResult result,
                           RedirectAttributes attribute, Model model) {
         
-        // 1. Validación de Negocio (Duplicados)
+        // 1. Validación de Negocio para duplicads
         if (clienteService.existeEmail(cliente.getEmail(), cliente.getId())) {
             result.rejectValue("email", "error.email", "Este correo electrónico ya está registrado.");
         }
