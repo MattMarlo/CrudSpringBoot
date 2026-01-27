@@ -4,6 +4,7 @@ import com.utc.Bancario.entity.Cliente;
 import com.utc.Bancario.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,18 +14,22 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    @Transactional(readOnly = true)
     public List<Cliente> listarTodos() {
         return clienteRepository.findAll();
     }
 
+    @Transactional
     public void guardar(Cliente cliente) {
         clienteRepository.save(cliente);
     }
 
+    @Transactional(readOnly = true)
     public Cliente obtenerPorId(Long id) {
         return clienteRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public void eliminar(Long id) {
         clienteRepository.deleteById(id);
     }
