@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "clientes")
+@Table(name = "clientes", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 public class Cliente {
 
     @Id
@@ -20,6 +20,7 @@ public class Cliente {
 
     @NotBlank(message = "El email es obligatorio")
     @Email(message = "Debe ingresar un email válido")
+    @Column(unique = true)
     private String email;
 
     @NotBlank(message = "El teléfono es obligatorio")

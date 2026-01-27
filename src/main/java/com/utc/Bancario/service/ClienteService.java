@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -32,5 +33,18 @@ public class ClienteService {
     @Transactional
     public void eliminar(Long id) {
         clienteRepository.deleteById(id);
+    }
+
+    // Lógica para evitar duplicados, permitiendo editar el propio registro
+    @Transactional(readOnly = true)
+    public boolean existeEmail(String email, Long id) {
+        Optional<Cliente> clienteEncontrado = clienteRepository.findByEmail(email);
+        if (clienteEncontrado.isPresent()) {
+            // Si es nuevo (id null) y existe -> Duplicado
+            if (id == null) return true;
+            // Si es edición y el ID encontrado no es el mismo -> Duplicado
+            if (!clienteEncontrado.get().getId().equals(id)) return true;
+        }
+        return false;
     }
 }
