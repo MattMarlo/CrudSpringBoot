@@ -24,4 +24,10 @@ public class CuentaService {
 
     @Transactional
     public void eliminar(Long id) { cuentaRepository.deleteById(id); }
+
+    // Método para validar unicidad de número de cuenta
+    @Transactional(readOnly = true)
+    public java.util.Optional<Cuenta> obtenerPorNumeroCuenta(String numeroCuenta) {
+        return cuentaRepository.findByNumeroCuenta(numeroCuenta);
+    }
 }

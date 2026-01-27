@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/cuentas")
@@ -40,6 +41,12 @@ public class CuentaController {
     public String guardar(@Valid @ModelAttribute Cuenta cuenta, BindingResult result, 
                           Model model, RedirectAttributes attribute) {
         
+        // Validar que el número de cuenta no esté duplicado (excepto si es la misma cuenta siendo editada)
+        Optional<Cuenta> cuentaExistente = cuentaService.obtenerPorNumeroCuenta(cuenta.getNumeroCuenta());
+        if (cuentaExistente.isPresent() && !cuentaExistente.get().getId().equals(cuenta.getId())) {
+            result.rejectValue("numeroCuenta", "duplicate", "Ya existe una cuenta con ese número");
+        }
+
         if (result.hasErrors()) {
             model.addAttribute("clientes", clienteService.listarTodos());
             model.addAttribute("titulo", cuenta.getId() != null ? "Editar Cuenta" : "Nueva Cuenta");
