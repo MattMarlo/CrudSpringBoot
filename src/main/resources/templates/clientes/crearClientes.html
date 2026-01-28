@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/base}">
+      layout:decorate="~{layout/base}" lang="en">
 <head>
-    <title>Nuevo Cliente</title>
+    <title>New Client</title>
 </head>
 <body>
 
@@ -12,18 +12,32 @@
             <div class="col-md-8">
                 <div class="card shadow">
                     <div class="card-header bg-primary text-white">
-                        <h4 class="mb-0">Registrar Cliente</h4>
+                        <h4 class="mb-0">Register Client</h4>
                     </div>
                     <div class="card-body">
                         <form id="formCliente" th:action="@{/clientes/guardar}" th:object="${cliente}" method="post">
                             
                             <div class="mb-3">
-                                <label class="form-label">Nombre:</label>
-                                <input type="text" th:field="*{nombre}" class="form-control" 
+                                <label class="form-label">Name:</label>
+                                <input type="text" th:field="*{nombre}" class="form-control"
                                        th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid' : ''"/>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
                             </div>
                             
+                            <div class="mb-3">
+                                <label class="form-label">Last Name:</label>
+                                <input type="text" th:field="*{apellido}" class="form-control"
+                                       th:classappend="${#fields.hasErrors('apellido')} ? 'is-invalid' : ''"/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">ID Number:</label>
+                                <input type="text" th:field="*{cedula}" class="form-control"
+                                       th:classappend="${#fields.hasErrors('cedula')} ? 'is-invalid' : ''"/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('cedula')}" th:errors="*{cedula}"></div>
+                            </div>
+
                             <div class="mb-3">
                                 <label class="form-label">Email:</label>
                                 <input type="email" th:field="*{email}" class="form-control"
@@ -32,22 +46,22 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Teléfono:</label>
+                                <label class="form-label">Phone:</label>
                                 <input type="text" th:field="*{telefono}" class="form-control"
                                        th:classappend="${#fields.hasErrors('telefono')} ? 'is-invalid' : ''"/>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Dirección:</label>
+                                <label class="form-label">Address:</label>
                                 <input type="text" th:field="*{direccion}" class="form-control"
                                        th:classappend="${#fields.hasErrors('direccion')} ? 'is-invalid' : ''"/>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"></div>
                             </div>
 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <a th:href="@{/clientes}" class="btn btn-secondary me-md-2">Cancelar</a>
-                                <button type="submit" class="btn btn-success">Guardar Datos</button>
+                                <a th:href="@{/clientes}" class="btn btn-secondary me-md-2">Cancel</a>
+                                <button type="submit" class="btn btn-success">Save Data</button>
                             </div>
                         </form>
                     </div>
@@ -62,15 +76,19 @@
                 $("#formCliente").validate({
                     rules: {
                         nombre: { required: true, minlength: 3 },
+                        apellido: { required: true, minlength: 3 },
+                        cedula: { required: true },
                         email: { required: true, email: true },
                         telefono: { required: true, digits: true, minlength: 10, maxlength: 10 },
                         direccion: { required: true }
                     },
                     messages: {
-                        nombre: { required: "El nombre es obligatorio", minlength: "Mínimo 3 caracteres" },
-                        email: { required: "El email es obligatorio", email: "Formato inválido" },
-                        telefono: { required: "Requerido", digits: "Solo números", minlength: "10 dígitos", maxlength: "10 dígitos" },
-                        direccion: "La dirección es obligatoria"
+                        nombre: { required: "Name is required", minlength: "Minimum 3 characters" },
+                        apellido: { required: "Last name is required", minlength: "Minimum 3 characters" },
+                        cedula: { required: "ID Number is required" },
+                        email: { required: "Email is required", email: "Invalid format" },
+                        telefono: { required: "Required", digits: "Numbers only", minlength: "10 digits", maxlength: "10 digits" },
+                        direccion: "Address is required"
                     }
                 });
             });

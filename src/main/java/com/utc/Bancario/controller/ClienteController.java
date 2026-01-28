@@ -4,6 +4,7 @@ import com.utc.Bancario.entity.Cliente;
 import com.utc.Bancario.service.ClienteService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,19 +36,35 @@ public class ClienteController {
     public String guardar(@Valid @ModelAttribute Cliente cliente, BindingResult result,
                           RedirectAttributes attribute, Model model) {
         
-        // 1. Validación de Negocio para duplicads
-        if (clienteService.existeEmail(cliente.getEmail(), cliente.getId())) {
-            result.rejectValue("email", "error.email", "Este correo electrónico ya está registrado.");
+        // Validación de Negocio para duplicados por cédula
+        if (clienteService.existeCedula(cliente.getCedula(), cliente.getId())) {
+            result.rejectValue("cedula", "error.cedula", "Esta cédula ya está registrada.");
         }
 
-        // 2. Validación de Formato (Entidad) + Resultado de la anterior
+        // Validación de Formato (Entidad) + Resultado de la anterior
         if (result.hasErrors()) {
             model.addAttribute("titulo", cliente.getId() != null ? "Editar Cliente" : "Nuevo Cliente");
             return cliente.getId() != null ? "clientes/editarClientes" : "clientes/crearClientes";
         }
 
-        clienteService.guardar(cliente);
-        attribute.addFlashAttribute("success", "¡Cliente guardado con éxito!");
+        try {
+            clienteService.guardar(cliente);
+            attribute.addFlashAttribute("success", "¡Cliente guardado con éxito!");
+        } catch (DataIntegrityViolationException e) {
+            // Capturar errores de integridad de datos (constraints duplicados en la BD)
+            String errorMsg = e.getMessage() != null ? e.getMessage().toLowerCase() : "";
+
+            if (errorMsg.contains("cedula")) {
+                result.rejectValue("cedula", "error.cedula", "Esta cédula ya está registrada.");
+            } else {
+                attribute.addFlashAttribute("error", "Error al guardar el cliente. Verifique los datos.");
+                return "redirect:/clientes";
+            }
+
+            model.addAttribute("titulo", cliente.getId() != null ? "Editar Cliente" : "Nuevo Cliente");
+            return cliente.getId() != null ? "clientes/editarClientes" : "clientes/crearClientes";
+        }
+
         return "redirect:/clientes";
     }
 

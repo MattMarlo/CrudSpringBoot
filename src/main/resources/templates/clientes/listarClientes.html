@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/base}">
+      layout:decorate="~{layout/base}" lang="en">
 <head>
-    <title>Lista de Clientes</title>
+    <title>Client List</title>
 </head>
 <body>
 
     <div layout:fragment="content">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2><i class="fas fa-users"></i> Gestión de Clientes</h2>
+            <h2><i class="fas fa-users"></i> Client Management</h2>
             <a th:href="@{/clientes/crear}" class="btn btn-primary">
-                <i class="fas fa-plus-circle"></i> Nuevo Cliente
+                <i class="fas fa-plus-circle"></i> New Client
             </a>
         </div>
 
@@ -21,25 +21,29 @@
                     <thead class="table-dark">
                         <tr>
                             <th>ID</th>
-                            <th>Nombre</th>
+                            <th>Name</th>
+                            <th>Last Name</th>
+                            <th>ID Number</th>
                             <th>Email</th>
-                            <th>Teléfono</th>
-                            <th>Dirección</th>
-                            <th>Acciones</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="cliente : ${clientes}">
                             <td th:text="${cliente.id}"></td>
                             <td th:text="${cliente.nombre}"></td>
+                            <td th:text="${cliente.apellido}"></td>
+                            <td th:text="${cliente.cedula}"></td>
                             <td th:text="${cliente.email}"></td>
                             <td th:text="${cliente.telefono}"></td>
                             <td th:text="${cliente.direccion}"></td>
                             <td>
-                                <a th:href="@{/clientes/editar/} + ${cliente.id}" class="btn btn-warning btn-sm" title="Editar">
+                                <a th:href="@{/clientes/editar/} + ${cliente.id}" class="btn btn-warning btn-sm" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <button th:onclick="'eliminarCliente(' + ${cliente.id} + ')'" class="btn btn-danger btn-sm" title="Eliminar">
+                                <button th:onclick="'deleteClient(' + ${cliente.id} + ')'" class="btn btn-danger btn-sm" title="Delete">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
@@ -52,16 +56,16 @@
 
     <th:block layout:fragment="scripts">
         <script>
-            function eliminarCliente(id) {
+            function deleteClient(id) {
                 Swal.fire({
-                    title: '¿Estás seguro?',
-                    text: "No podrás recuperar este registro",
+                    title: 'Are you sure?',
+                    text: "You won't be able to recover this record",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Sí, eliminar',
-                    cancelButtonText: 'Cancelar'
+                    confirmButtonText: 'Yes, delete',
+                    cancelButtonText: 'Cancel'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         window.location.href = "/clientes/eliminar/" + id;
@@ -70,6 +74,7 @@
             }
         </script>
     </th:block>
+
 
 </body>
 </html>

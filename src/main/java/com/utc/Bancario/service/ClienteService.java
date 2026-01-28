@@ -35,14 +35,13 @@ public class ClienteService {
         clienteRepository.deleteById(id);
     }
 
-    // Lógica para evitar duplicados, permitiendo editar el propio registro
+
+    // Validar duplicados por cédula
     @Transactional(readOnly = true)
-    public boolean existeEmail(String email, Long id) {
-        Optional<Cliente> clienteEncontrado = clienteRepository.findByEmail(email);
+    public boolean existeCedula(String cedula, Long id) {
+        Optional<Cliente> clienteEncontrado = clienteRepository.findByCedula(cedula);
         if (clienteEncontrado.isPresent()) {
-            // Si es nuevo (id null) y existe -> Duplicado
             if (id == null) return true;
-            // Si es edición y el ID encontrado no es el mismo -> Duplicado
             if (!clienteEncontrado.get().getId().equals(id)) return true;
         }
         return false;

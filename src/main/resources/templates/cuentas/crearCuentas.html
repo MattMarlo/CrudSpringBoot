@@ -1,42 +1,42 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="es" layout:decorate="~{layout/base}">
-<head><title>Nueva Cuenta</title></head>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en" layout:decorate="~{layout/base}">
+<head><title>New Account</title></head>
 <body>
     <div layout:fragment="content">
         <section id="apartado-cuenta">
         <div class="card col-md-6 mx-auto shadow">
-            <div class="card-header bg-primary text-white"><h4>Registrar Cuenta</h4></div>
+            <div class="card-header bg-primary text-white"><h4>Register Account</h4></div>
             <div class="card-body">
                 <form th:action="@{/cuentas/guardar}" th:object="${cuenta}" method="post">
                     <div class="mb-3">
-                        <label class="form-label">Cliente:</label>
+                        <label class="form-label">Client:</label>
                         <select th:field="*{cliente}" class="form-select" th:classappend="${#fields.hasErrors('cliente')} ? 'is-invalid' : ''">
-                            <option value="">-- Seleccionar Cliente --</option>
+                            <option value="">-- Select Client --</option>
                             <option th:each="cli : ${clientes}" th:value="${cli.id}" th:text="${cli.nombre}"></option>
                         </select>
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('cliente')}" th:errors="*{cliente}"></div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Número de Cuenta:</label>
+                        <label class="form-label">Account Number:</label>
                         <input type="text" th:field="*{numeroCuenta}" class="form-control" th:classappend="${#fields.hasErrors('numeroCuenta')} ? 'is-invalid' : ''" required/>
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('numeroCuenta')}" th:errors="*{numeroCuenta}"></div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Tipo:</label>
+                        <label class="form-label">Type:</label>
                         <select th:field="*{tipoCuenta}" class="form-select" th:classappend="${#fields.hasErrors('tipoCuenta')} ? 'is-invalid' : ''">
-                            <option value="Ahorros">Ahorros</option>
-                            <option value="Corriente">Corriente</option>
+                            <option value="Ahorros">Savings</option>
+                            <option value="Corriente">Checking</option>
                         </select>
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('tipoCuenta')}" th:errors="*{tipoCuenta}"></div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Saldo Inicial:</label>
+                        <label class="form-label">Initial Balance:</label>
                         <input type="number" step="0.01" th:field="*{saldo}" class="form-control" th:classappend="${#fields.hasErrors('saldo')} ? 'is-invalid' : ''" required/>
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('saldo')}" th:errors="*{saldo}"></div>
                     </div>
                     <div class="text-end">
-                        <a th:href="@{/cuentas}" class="btn btn-secondary">Cancelar</a>
-                        <button type="submit" class="btn btn-success">Guardar Cuenta</button>
+                        <a th:href="@{/cuentas}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-success">Save Account</button>
                     </div>
                 </form>
             </div>
